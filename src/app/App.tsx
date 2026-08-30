@@ -1,3 +1,6 @@
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
+
 export function App() {
-  return <main>Frontend foundation is ready.</main>
+  return <RouterProvider router={router} />
 }
