@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ApiError } from '../../lib/api'
 import { orderApi } from '../../services/order.api'
 import { getAccessToken } from '../auth/auth.storage'
+import { invalidateOrderCache } from './useOrders'
 
 type Item = { product_id: string; quantity: number }
 
@@ -11,7 +12,7 @@ export function CreateOrderPage() {
   const [items, setItems] = useState<Item[]>([{ product_id: '', quantity: 1 }])
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const valid = items.every((item) => item.product_id.trim() && Number.isInteger(item.quantity) && item.quantity > 0)
+  const valid = items.length > 0 && items.every((item) => item.product_id.trim() && Number.isInteger(item.quantity) && item.quantity > 0)
 
   const submit = async (event: FormEvent) => {
     event.preventDefault(); setError(null)
@@ -19,7 +20,7 @@ export function CreateOrderPage() {
     const token = getAccessToken()
     if (!token) { setError('You must be logged in.'); return }
     setSubmitting(true)
-    try { const order = await orderApi.create({ items }, token); navigate(`/orders/${encodeURIComponent(order.id)}`) }
+    try { const order = await orderApi.create({ items }, token); invalidateOrderCache(); navigate(`/orders/${encodeURIComponent(order.id)}`) }
     catch (reason) { setError(reason instanceof ApiError || reason instanceof Error ? reason.message : 'Unable to create order.') }
     finally { setSubmitting(false) }
   }
