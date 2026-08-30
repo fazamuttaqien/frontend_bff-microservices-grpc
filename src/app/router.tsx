@@ -10,6 +10,7 @@ import { ProductsPage } from '../features/products/ProductsPage'
 import { CreateOrderPage } from '../features/orders/CreateOrderPage'
 import { OrderDetailPage } from '../features/orders/OrderDetailPage'
 import { OrdersPage } from '../features/orders/OrdersPage'
+import { DashboardPage } from '../features/dashboard/DashboardPage'
 import { AppLayout } from './layouts/AppLayout'
 import { PublicLayout } from './layouts/PublicLayout'
 
@@ -25,7 +26,7 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [{ element: <AppLayout />, children: [
-      { path: '/dashboard', element: <PlaceholderPage title="Dashboard" /> },
+      { path: '/dashboard', element: <DashboardPage /> },
       { path: '/products', element: <ProductsPage /> },
       { path: '/products/:id', element: <ProductDetailPage /> },
       { path: '/orders', element: <OrdersPage /> },
