@@ -1,7 +1,7 @@
-import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { PlaceholderPage } from '../components/PlaceholderPage'
 import { AppLayout } from './layouts/AppLayout'
 import { PublicLayout } from './layouts/PublicLayout'
-import { PlaceholderPage } from '../components/PlaceholderPage'
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,3 @@ export const router = createBrowserRouter([
   },
   { path: '*', element: <Navigate to="/" replace /> },
 ])
-
-export function RootOutlet() {
-  return <Outlet />
-}
