@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ApiError } from '../../lib/api'
 import { orderApi } from '../../services/order.api'
 import type { Order, OrderDetail, OrderList } from '../../types/api'
-import { getAccessToken } from '../auth/auth.storage'
+import { authStorage } from '../auth/auth.storage'
 
 const listCache = new Map<string, OrderList>()
 const listRequests = new Map<string, Promise<OrderList>>()
@@ -28,7 +28,7 @@ export function clearOrderCache(id?: string) { if (id) detailCache.delete(id); e
 export function useOrders(page = 1, pageSize = 20) {
   const [orders, setOrders] = useState<Order[]>([]); const [total, setTotal] = useState(0); const [loading, setLoading] = useState(true); const [error, setError] = useState<string | null>(null)
   const load = useCallback(async () => {
-    const token = getAccessToken(); if (!token) { setError('You must be logged in.'); setLoading(false); return }
+    const token = authStorage.getToken(); if (!token) { setError('You must be logged in.'); setLoading(false); return }
     setLoading(true); setError(null)
     try { const result = await fetchList(token, page, pageSize); setOrders(result.orders); setTotal(result.total) } catch (reason) { setOrders([]); setError(messageOf(reason)) } finally { setLoading(false) }
   }, [page, pageSize])
@@ -39,7 +39,7 @@ export function useOrder(id: string | null) {
   const [data, setData] = useState<OrderDetail | null>(null); const [loading, setLoading] = useState(Boolean(id)); const [error, setError] = useState<string | null>(null)
   const load = useCallback(async () => {
     if (!id) { setData(null); setLoading(false); setError(null); return }
-    const token = getAccessToken(); if (!token) { setError('You must be logged in.'); setLoading(false); return }
+    const token = authStorage.getToken(); if (!token) { setError('You must be logged in.'); setLoading(false); return }
     setLoading(true); setError(null)
     try { setData(await fetchDetail(token, id)) } catch (reason) { setData(null); setError(messageOf(reason)) } finally { setLoading(false) }
   }, [id])
