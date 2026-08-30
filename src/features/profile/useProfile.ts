@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAppSelector } from '@/app/hooks'
+import { useCallback, useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { ApiError } from '@/lib/api-client'
 import { userApi } from '@/services/user.api'
-import type { User } from '@/types/api'
+import { setAuthenticated, setUnauthenticated } from '../auth/authSlice'
 
 function errorMessage(error: unknown) {
   if (error instanceof ApiError) return error.message
@@ -10,20 +10,11 @@ function errorMessage(error: unknown) {
 }
 
 export function useProfile() {
-  const currentUser = useAppSelector((state) => state.auth.currentUser)
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.auth.currentUser)
   const authStatus = useAppSelector((state) => state.auth.status)
-  const [user, setUser] = useState<User | null>(currentUser)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const loadedUserId = useRef<string | null>(currentUser?.id ?? null)
-
-  useEffect(() => {
-    setUser(currentUser)
-    if (currentUser) {
-      loadedUserId.current = currentUser.id
-      setError(null)
-    }
-  }, [currentUser])
 
   const loadProfile = useCallback(async () => {
     setLoading(true)
@@ -31,20 +22,22 @@ export function useProfile() {
 
     try {
       const profile = await userApi.me()
-      loadedUserId.current = profile.id
-      setUser(profile)
+      dispatch(setAuthenticated(profile))
     } catch (reason: unknown) {
-      setUser(null)
+      if (reason instanceof ApiError && reason.code === 'unauthenticated') {
+        dispatch(setUnauthenticated())
+        return
+      }
       setError(errorMessage(reason))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
-    if (authStatus !== 'authenticated' || currentUser || loadedUserId.current) return
+    if (authStatus !== 'authenticated' || user) return
     void loadProfile()
-  }, [authStatus, currentUser, loadProfile])
+  }, [authStatus, user, loadProfile])
 
   return { user, loading, error, reload: loadProfile }
 }
