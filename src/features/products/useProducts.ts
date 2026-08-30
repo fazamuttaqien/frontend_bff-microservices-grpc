@@ -12,18 +12,20 @@ function errorMessage(error: unknown) {
   return 'Unable to load products.'
 }
 
-async function fetchProducts(page: number, pageSize: number) {
+function fetchProducts(page: number, pageSize: number) {
   const key = `${page}:${pageSize}`
   const cached = cache.get(key)
-  if (cached) return cached
+  if (cached) return Promise.resolve(cached)
   const inFlight = requests.get(key)
   if (inFlight) return inFlight
 
-  const request = productApi.list(page, pageSize).then((result) => {
-    const value = { products: result.products ?? [], total: result.total ?? 0 }
-    cache.set(key, value)
-    return value
-  }).finally(() => requests.delete(key))
+  const request = productApi.list(page, pageSize)
+    .then((result) => {
+      const value = { products: result.products ?? [], total: result.total ?? 0 }
+      cache.set(key, value)
+      return value
+    })
+    .finally(() => requests.delete(key))
 
   requests.set(key, request)
   return request
@@ -35,56 +37,47 @@ export function useProducts(page: number, pageSize: number) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const load = useCallback(async () => {
-    let active = true
+  const load = useCallback(async (force = false) => {
+    const key = `${page}:${pageSize}`
+    if (force) cache.delete(key)
     setLoading(true)
     setError(null)
     try {
       const result = await fetchProducts(page, pageSize)
-      if (!active) return
       setProducts(result.products)
       setTotal(result.total)
     } catch (reason: unknown) {
-      if (!active) return
       setProducts([])
       setTotal(0)
       setError(errorMessage(reason))
     } finally {
-      if (active) setLoading(false)
+      setLoading(false)
     }
-    return () => { active = false }
   }, [page, pageSize])
 
   useEffect(() => {
-    let cancelled = false
+    let active = true
     setLoading(true)
     setError(null)
     void fetchProducts(page, pageSize)
       .then((result) => {
-        if (!cancelled) {
+        if (active) {
           setProducts(result.products)
           setTotal(result.total)
         }
       })
       .catch((reason: unknown) => {
-        if (!cancelled) {
+        if (active) {
           setProducts([])
           setTotal(0)
           setError(errorMessage(reason))
         }
       })
       .finally(() => {
-        if (!cancelled) setLoading(false)
+        if (active) setLoading(false)
       })
-    return () => { cancelled = true }
+    return () => { active = false }
   }, [page, pageSize])
 
-  const reload = useCallback(async () => {
-    cache.delete(`${page}:${pageSize}`)
-    const result = await fetchProducts(page, pageSize)
-    setProducts(result.products)
-    setTotal(result.total)
-  }, [page, pageSize])
-
-  return { products, total, loading, error, reload }
+  return { products, total, loading, error, reload: () => load(true) }
 }
