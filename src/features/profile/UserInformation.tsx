@@ -1,24 +1,32 @@
-import type { User } from '../../types/api'
+import type { User } from '@/types/api'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 
 interface UserInformationProps {
   user: User
 }
 
 export function UserInformation({ user }: UserInformationProps) {
+  const memberSince = user.created_at
+    ? new Date(user.created_at).toLocaleDateString()
+    : '—'
+
   return (
-    <dl>
-      <div>
-        <dt>Name</dt>
-        <dd>{user.name || '—'}</dd>
+    <dl className="divide-y rounded-lg border">
+      <div className="grid gap-1 px-4 py-3 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-4">
+        <dt className="text-sm font-medium text-muted-foreground">Name</dt>
+        <dd className="font-medium">{user.name || '—'}</dd>
       </div>
-      <div>
-        <dt>Email</dt>
+      <Separator className="sm:hidden" />
+      <div className="grid gap-1 px-4 py-3 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-4">
+        <dt className="text-sm font-medium text-muted-foreground">Email</dt>
         <dd>{user.email || '—'}</dd>
       </div>
-      <div>
-        <dt>Member since</dt>
+      <Separator className="sm:hidden" />
+      <div className="grid gap-1 px-4 py-3 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-4">
+        <dt className="text-sm font-medium text-muted-foreground">Member since</dt>
         <dd>
-          {user.created_at ? new Date(user.created_at).toLocaleString() : '—'}
+          <Badge variant="secondary">{memberSince}</Badge>
         </dd>
       </div>
     </dl>
