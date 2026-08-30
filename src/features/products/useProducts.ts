@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ApiError } from '../../lib/api'
-import { productApi } from '../../services/product.api'
-import type { Product } from '../../types/api'
+import { ApiError } from '@/lib/api-client'
+import { productApi } from '@/services/product.api'
+import type { Product } from '@/types/api'
 
 const cache = new Map<string, { products: Product[]; total: number }>()
 const requests = new Map<

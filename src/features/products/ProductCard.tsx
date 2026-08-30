@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Badge } from '../../components/ui/badge'
+import { Badge } from '@/components/ui/badge'
 import {
   Card,
   CardContent,
@@ -7,9 +7,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../../components/ui/card'
-import { Button } from '../../components/ui/button'
-import type { Product } from '../../types/api'
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import type { Product } from '@/types/api'
 
 interface ProductCardProps {
   product: Product

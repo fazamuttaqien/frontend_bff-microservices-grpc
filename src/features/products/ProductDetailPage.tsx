@@ -1,16 +1,11 @@
 import { Link, useParams } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
-import { Badge } from '../../components/ui/badge'
-import { Button } from '../../components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '../../components/ui/card'
-import { ApiError } from '../../lib/api'
-import { productApi } from '../../services/product.api'
-import type { Product } from '../../types/api'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ApiError } from '@/lib/api-client'
+import { productApi } from '@/services/product.api'
+import type { Product } from '@/types/api'
 import { ProductError } from './ProductState'
 import { ProductLoading } from './ProductLoading'
 

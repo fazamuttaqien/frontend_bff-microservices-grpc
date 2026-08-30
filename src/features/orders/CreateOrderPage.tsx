@@ -1,25 +1,25 @@
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Alert } from '../../components/ui/alert'
-import { Button } from '../../components/ui/button'
+import { Alert } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '../../components/ui/card'
+} from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from '../../components/ui/dialog'
-import { Input } from '../../components/ui/input'
-import { Label } from '../../components/ui/label'
-import { ApiError } from '../../lib/api'
-import { orderApi } from '../../services/order.api'
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { ApiError } from '@/lib/api-client'
+import { orderApi } from '@/services/order.api'
 import { invalidateOrderCache } from './useOrders'
 
 type Item = { product_id: string; quantity: number }

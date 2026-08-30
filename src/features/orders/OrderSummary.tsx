@@ -1,12 +1,12 @@
-import type { Order, Product } from '../../types/api'
-import { Badge } from '../../components/ui/badge'
+import type { Order, Product } from '@/types/api'
+import { Badge } from '@/components/ui/badge'
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../../components/ui/card'
+} from '@/components/ui/card'
 
 interface OrderSummaryProps {
   order: Order

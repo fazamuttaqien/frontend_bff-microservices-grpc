@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
-import { Alert } from '../../components/ui/alert'
-import { Badge } from '../../components/ui/badge'
-import { Button } from '../../components/ui/button'
+import { Alert } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '../../components/ui/card'
-import { Skeleton } from '../../components/ui/skeleton'
+} from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '../auth/AuthProvider'
 import { useOrder, useOrders } from '../orders/useOrders'
 

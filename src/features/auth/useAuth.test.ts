@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { User } from '@/types/api'
 import { setAuthenticated, setUnauthenticated } from './authSlice'
 
-vi.mock('../../services/auth.api', () => ({
+vi.mock('@/services/auth.api', () => ({
   authApi: {
     me: vi.fn(),
   },
@@ -22,7 +22,7 @@ describe('bootstrapAuthentication', () => {
   })
 
   it('stores the current user when session bootstrap succeeds', async () => {
-    const { authApi } = await import('../../services/auth.api')
+    const { authApi } = await import('@/services/auth.api')
     const { bootstrapAuthentication } = await import('./useAuth')
     vi.mocked(authApi.me).mockResolvedValue(user)
 
@@ -32,7 +32,7 @@ describe('bootstrapAuthentication', () => {
   })
 
   it('marks the session unauthenticated when bootstrap fails with 401', async () => {
-    const { authApi } = await import('../../services/auth.api')
+    const { authApi } = await import('@/services/auth.api')
     const { bootstrapAuthentication } = await import('./useAuth')
     vi.mocked(authApi.me).mockRejectedValue({ code: 'unauthenticated' })
 

@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom'
-import { Button } from '../../components/ui/button'
+import { Button } from '@/components/ui/button'
 import { ProductCard } from './ProductCard'
 import { ProductEmpty, ProductError } from './ProductState'
 import { ProductLoading } from './ProductLoading'

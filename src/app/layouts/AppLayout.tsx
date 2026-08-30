@@ -7,7 +7,7 @@ import { AppSidebar } from '@/components/app/AppSidebar'
 import { MobileNavigation } from '@/components/app/MobileNavigation'
 import { PageContainer } from '@/components/app/PageContainer'
 import { useAppSelector } from '@/app/hooks'
-import { useAuth } from '../../features/auth/useAuth'
+import { useAuth } from '@/features/auth/useAuth'
 
 export function AppLayout() {
   const user = useAppSelector((state) => state.auth.currentUser)
@@ -30,7 +30,7 @@ export function AppLayout() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
         <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
           <MobileNavigation />
           <NavLink

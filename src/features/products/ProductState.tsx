@@ -1,6 +1,6 @@
-import { Alert } from '../../components/ui/alert'
-import { Button } from '../../components/ui/button'
-import { Card, CardContent } from '../../components/ui/card'
+import { Alert } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface ProductStateProps {
   message: string

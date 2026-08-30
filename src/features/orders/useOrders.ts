@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ApiError } from '../../lib/api'
-import { orderApi } from '../../services/order.api'
-import type { Order, OrderDetail, OrderList } from '../../types/api'
+import { ApiError } from '@/lib/api-client'
+import { orderApi } from '@/services/order.api'
+import type { Order, OrderDetail, OrderList } from '@/types/api'
 
 const listCache = new Map<string, OrderList>()
 const listRequests = new Map<string, Promise<OrderList>>()
