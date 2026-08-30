@@ -1,4 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface Props {
   children: ReactNode
@@ -20,11 +23,27 @@ export class RouteErrorBoundary extends Component<Props, State> {
 
   render() {
     if (!this.state.hasError) return this.props.children
+
     return (
-      <main role="alert">
-        <h1>Something went wrong</h1>
-        <p>We couldn't display this page. Please reload and try again.</p>
-        <button onClick={() => window.location.reload()}>Reload</button>
+      <main className="mx-auto flex min-h-[50vh] w-full max-w-lg items-center px-4 py-8">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Something went wrong</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Alert variant="destructive">
+              <AlertTitle>We couldn&apos;t display this page</AlertTitle>
+              <AlertDescription>
+                Please reload the page and try again. If the problem continues, return later.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+          <CardFooter>
+            <Button type="button" onClick={() => window.location.reload()}>
+              Reload page
+            </Button>
+          </CardFooter>
+        </Card>
       </main>
     )
   }
