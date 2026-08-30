@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { LoginPage } from './LoginPage'
 
-const login = vi.fn()
+const { login } = vi.hoisted(() => ({ login: vi.fn() }))
 vi.mock('./AuthProvider', () => ({ useAuth: () => ({ login, status: 'unauthenticated' }) }))
 
 describe('LoginPage', () => {
