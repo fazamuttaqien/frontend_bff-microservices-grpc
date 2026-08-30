@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { User } from '@/types/api'
+import { ApiError } from '@/lib/api-client'
 import { authApi } from '@/services/auth.api'
 import { bootstrapAuthentication } from './useAuth'
 import { setAuthenticated, setUnauthenticated } from './authSlice'
@@ -32,7 +33,9 @@ describe('bootstrapAuthentication', () => {
   })
 
   it('marks the session unauthenticated when bootstrap fails with 401', async () => {
-    vi.mocked(authApi.me).mockRejectedValue({ code: 'unauthenticated' })
+    vi.mocked(authApi.me).mockRejectedValue(
+      new ApiError(401, 'unauthenticated', 'Please sign in to continue.'),
+    )
 
     await bootstrapAuthentication(dispatch as never)
 
