@@ -4,7 +4,10 @@ import { productApi } from '../../services/product.api'
 import type { Product } from '../../types/api'
 
 const cache = new Map<string, { products: Product[]; total: number }>()
-const requests = new Map<string, Promise<{ products: Product[]; total: number }>>()
+const requests = new Map<
+  string,
+  Promise<{ products: Product[]; total: number }>
+>()
 
 function errorMessage(error: unknown) {
   if (error instanceof ApiError) return error.message
@@ -19,9 +22,13 @@ function fetchProducts(page: number, pageSize: number) {
   const inFlight = requests.get(key)
   if (inFlight) return inFlight
 
-  const request = productApi.list(page, pageSize)
+  const request = productApi
+    .list(page, pageSize)
     .then((result) => {
-      const value = { products: result.products ?? [], total: result.total ?? 0 }
+      const value = {
+        products: result.products ?? [],
+        total: result.total ?? 0,
+      }
       cache.set(key, value)
       return value
     })
@@ -37,46 +44,54 @@ export function useProducts(page: number, pageSize: number) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const load = useCallback(async (force = false) => {
-    const key = `${page}:${pageSize}`
-    if (force) cache.delete(key)
-    setLoading(true)
-    setError(null)
-    try {
-      const result = await fetchProducts(page, pageSize)
-      setProducts(result.products)
-      setTotal(result.total)
-    } catch (reason: unknown) {
-      setProducts([])
-      setTotal(0)
-      setError(errorMessage(reason))
-    } finally {
-      setLoading(false)
-    }
-  }, [page, pageSize])
+  const load = useCallback(
+    async (force = false) => {
+      const key = `${page}:${pageSize}`
+      if (force) cache.delete(key)
+      setLoading(true)
+      setError(null)
+      try {
+        const result = await fetchProducts(page, pageSize)
+        setProducts(result.products)
+        setTotal(result.total)
+      } catch (reason: unknown) {
+        setProducts([])
+        setTotal(0)
+        setError(errorMessage(reason))
+      } finally {
+        setLoading(false)
+      }
+    },
+    [page, pageSize],
+  )
 
   useEffect(() => {
     let active = true
-    setLoading(true)
-    setError(null)
-    void fetchProducts(page, pageSize)
-      .then((result) => {
-        if (active) {
-          setProducts(result.products)
-          setTotal(result.total)
-        }
-      })
-      .catch((reason: unknown) => {
-        if (active) {
-          setProducts([])
-          setTotal(0)
-          setError(errorMessage(reason))
-        }
-      })
-      .finally(() => {
+
+    const run = async () => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        const result = await fetchProducts(page, pageSize)
+        if (!active) return
+        setProducts(result.products)
+        setTotal(result.total)
+      } catch (reason: unknown) {
+        if (!active) return
+        setProducts([])
+        setTotal(0)
+        setError(errorMessage(reason))
+      } finally {
         if (active) setLoading(false)
-      })
-    return () => { active = false }
+      }
+    }
+
+    void run()
+
+    return () => {
+      active = false
+    }
   }, [page, pageSize])
 
   return { products, total, loading, error, reload: () => load(true) }

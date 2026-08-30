@@ -1,6 +1,11 @@
 import { Alert } from '../../components/ui/alert'
 import { Button } from '../../components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '../../components/ui/card'
 import { Skeleton } from '../../components/ui/skeleton'
 
 interface StateProps {
@@ -11,7 +16,12 @@ interface StateProps {
 
 export function OrderLoading() {
   return (
-    <div role="status" aria-live="polite" aria-label="Loading orders" className="grid gap-4 md:grid-cols-2">
+    <div
+      role="status"
+      aria-live="polite"
+      aria-label="Loading orders"
+      className="grid gap-4 md:grid-cols-2"
+    >
       {[0, 1, 2, 3].map((item) => (
         <Card key={item}>
           <CardHeader className="space-y-2">

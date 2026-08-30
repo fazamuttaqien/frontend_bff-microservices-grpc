@@ -55,7 +55,10 @@ export function ProductsPage() {
               >
                 Previous
               </Button>
-              <span className="text-sm text-muted-foreground" aria-live="polite">
+              <span
+                className="text-sm text-muted-foreground"
+                aria-live="polite"
+              >
                 Page {page} of {pageCount}
               </span>
               <Button

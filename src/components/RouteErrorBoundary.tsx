@@ -1,7 +1,13 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface Props {
   children: ReactNode
@@ -34,7 +40,8 @@ export class RouteErrorBoundary extends Component<Props, State> {
             <Alert variant="destructive">
               <AlertTitle>We couldn&apos;t display this page</AlertTitle>
               <AlertDescription>
-                Please reload the page and try again. If the problem continues, return later.
+                Please reload the page and try again. If the problem continues,
+                return later.
               </AlertDescription>
             </Alert>
           </CardContent>

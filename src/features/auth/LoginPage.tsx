@@ -2,7 +2,13 @@ import { FormEvent, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Form, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -17,19 +23,22 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
   const [touched, setTouched] = useState({ email: false, password: false })
 
-  const emailError = touched.email && !email.trim()
-    ? 'Email is required.'
-    : touched.email && !/^\S+@\S+\.\S+$/.test(email)
-      ? 'Enter a valid email address.'
+  const emailError =
+    touched.email && !email.trim()
+      ? 'Email is required.'
+      : touched.email && !/^\S+@\S+\.\S+$/.test(email)
+        ? 'Enter a valid email address.'
+        : null
+  const passwordError =
+    touched.password && password.length < 8
+      ? 'Password must be at least 8 characters.'
       : null
-  const passwordError = touched.password && password.length < 8
-    ? 'Password must be at least 8 characters.'
-    : null
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setTouched({ email: true, password: true })
-    if (emailError || passwordError || !email.trim() || password.length < 8) return
+    if (emailError || passwordError || !email.trim() || password.length < 8)
+      return
 
     setSubmitting(true)
     try {
@@ -76,18 +85,34 @@ export function LoginPage() {
         <Form onSubmit={handleSubmit} noValidate>
           <FormItem>
             <FormLabel htmlFor="login-email">Email</FormLabel>
-            <Input id="login-email" name="email" type="email" autoComplete="email" value={email}
+            <Input
+              id="login-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={email}
               onChange={(event) => setEmail(event.target.value)}
               onBlur={() => setTouched((value) => ({ ...value, email: true }))}
-              aria-invalid={Boolean(emailError)} required />
+              aria-invalid={Boolean(emailError)}
+              required
+            />
             {emailError && <FormMessage>{emailError}</FormMessage>}
           </FormItem>
           <FormItem>
             <FormLabel htmlFor="login-password">Password</FormLabel>
-            <Input id="login-password" name="password" type="password" autoComplete="current-password" value={password}
+            <Input
+              id="login-password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
               onChange={(event) => setPassword(event.target.value)}
-              onBlur={() => setTouched((value) => ({ ...value, password: true }))}
-              aria-invalid={Boolean(passwordError)} required />
+              onBlur={() =>
+                setTouched((value) => ({ ...value, password: true }))
+              }
+              aria-invalid={Boolean(passwordError)}
+              required
+            />
             {passwordError && <FormMessage>{passwordError}</FormMessage>}
           </FormItem>
           <Button type="submit" className="w-full" disabled={submitting}>
@@ -97,7 +122,12 @@ export function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{' '}
-          <Link className="font-medium text-foreground underline underline-offset-4" to="/register">Register</Link>
+          <Link
+            className="font-medium text-foreground underline underline-offset-4"
+            to="/register"
+          >
+            Register
+          </Link>
         </p>
       </CardContent>
     </Card>

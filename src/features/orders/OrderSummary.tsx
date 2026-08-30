@@ -15,8 +15,10 @@ interface OrderSummaryProps {
 
 function statusVariant(status: string) {
   const normalized = status.toLowerCase()
-  if (['cancelled', 'canceled', 'failed'].includes(normalized)) return 'destructive' as const
-  if (['completed', 'paid', 'success'].includes(normalized)) return 'secondary' as const
+  if (['cancelled', 'canceled', 'failed'].includes(normalized))
+    return 'destructive' as const
+  if (['completed', 'paid', 'success'].includes(normalized))
+    return 'secondary' as const
   return 'outline' as const
 }
 
@@ -27,7 +29,9 @@ export function OrderSummary({ order, products = [] }: OrderSummaryProps) {
     <Card className="h-full transition-shadow hover:shadow-md">
       <CardHeader className="gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">
-          <CardTitle className="text-base sm:text-lg">Order #{order.id}</CardTitle>
+          <CardTitle className="text-base sm:text-lg">
+            Order #{order.id}
+          </CardTitle>
           <p className="text-muted-foreground text-sm">
             {new Date(order.created_at).toLocaleString()}
           </p>

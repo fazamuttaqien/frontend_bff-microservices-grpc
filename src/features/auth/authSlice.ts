@@ -1,7 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { User } from '@/types/api'
 
-export type AuthStatus = 'checking' | 'authenticated' | 'unauthenticated' | 'error'
+export type AuthStatus =
+  'checking' | 'authenticated' | 'unauthenticated' | 'error'
 
 interface AuthState {
   status: AuthStatus
@@ -45,5 +46,11 @@ const authSlice = createSlice({
   },
 })
 
-export const { setChecking, setAuthenticated, setUnauthenticated, setAuthError, clearAuthError } = authSlice.actions
+export const {
+  setChecking,
+  setAuthenticated,
+  setUnauthenticated,
+  setAuthError,
+  clearAuthError,
+} = authSlice.actions
 export default authSlice.reducer

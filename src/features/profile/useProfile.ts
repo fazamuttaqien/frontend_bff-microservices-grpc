@@ -36,8 +36,35 @@ export function useProfile() {
 
   useEffect(() => {
     if (authStatus !== 'authenticated' || user) return
-    void loadProfile()
-  }, [authStatus, user, loadProfile])
+
+    let active = true
+
+    const run = async () => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        const profile = await userApi.me()
+        if (!active) return
+        dispatch(setAuthenticated(profile))
+      } catch (reason: unknown) {
+        if (!active) return
+        if (reason instanceof ApiError && reason.code === 'unauthenticated') {
+          dispatch(setUnauthenticated())
+          return
+        }
+        setError(errorMessage(reason))
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    void run()
+
+    return () => {
+      active = false
+    }
+  }, [authStatus, dispatch, user])
 
   return { user, loading, error, reload: loadProfile }
 }

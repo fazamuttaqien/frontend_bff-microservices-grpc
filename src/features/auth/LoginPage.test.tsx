@@ -21,13 +21,19 @@ describe('LoginPage', () => {
     )
     await user.click(screen.getByRole('button', { name: /sign in/i }))
     expect(screen.getByText('Email is required.')).toBeInTheDocument()
-    expect(screen.getByText('Password must be at least 8 characters.')).toBeInTheDocument()
+    expect(
+      screen.getByText('Password must be at least 8 characters.'),
+    ).toBeInTheDocument()
     expect(login).not.toHaveBeenCalled()
   })
 
   it('submits valid credentials and disables the button while pending', async () => {
     let resolve!: () => void
-    login.mockReturnValue(new Promise<void>((r) => { resolve = r }))
+    login.mockReturnValue(
+      new Promise<void>((r) => {
+        resolve = r
+      }),
+    )
     const user = userEvent.setup()
     render(
       <MemoryRouter>
@@ -38,7 +44,10 @@ describe('LoginPage', () => {
     await user.type(screen.getByLabelText('Password'), 'password123')
     const button = screen.getByRole('button', { name: /sign in/i })
     await user.click(button)
-    expect(login).toHaveBeenCalledWith({ email: 'user@example.com', password: 'password123' })
+    expect(login).toHaveBeenCalledWith({
+      email: 'user@example.com',
+      password: 'password123',
+    })
     expect(button).toBeDisabled()
     resolve()
   })

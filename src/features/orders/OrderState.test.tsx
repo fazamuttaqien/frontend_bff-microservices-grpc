@@ -6,7 +6,9 @@ describe('OrderState', () => {
   it('renders an accessible loading state', () => {
     render(<OrderLoading />)
 
-    expect(screen.getByRole('status', { name: /loading orders/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('status', { name: /loading orders/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders the empty state', () => {

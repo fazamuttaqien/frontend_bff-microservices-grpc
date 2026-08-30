@@ -15,7 +15,12 @@ describe('orderApi', () => {
       data: { items: [{ product_id: 'p-1', quantity: 2 }] },
     })
 
-    apiRequest.mockResolvedValueOnce({ orders: [], total: 0, page: 1, page_size: 20 })
+    apiRequest.mockResolvedValueOnce({
+      orders: [],
+      total: 0,
+      page: 1,
+      page_size: 20,
+    })
     await orderApi.list(1, 20)
     expect(apiRequest).toHaveBeenCalledWith({
       url: '/api/v1/orders',

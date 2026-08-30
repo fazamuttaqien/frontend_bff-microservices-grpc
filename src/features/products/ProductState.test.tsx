@@ -5,7 +5,9 @@ import { ProductEmpty, ProductError } from './ProductState'
 describe('ProductState', () => {
   it('renders an API failure and retries when requested', () => {
     const retry = vi.fn()
-    render(<ProductError message="Unable to reach the server." onAction={retry} />)
+    render(
+      <ProductError message="Unable to reach the server." onAction={retry} />,
+    )
 
     fireEvent.click(screen.getByRole('button', { name: /try again/i }))
 

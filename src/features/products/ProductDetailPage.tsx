@@ -38,8 +38,35 @@ export function ProductDetailPage() {
   }, [id])
 
   useEffect(() => {
-    void load()
-  }, [load])
+    let active = true
+
+    const run = async () => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        const nextProduct = await productApi.get(id)
+        if (!active) return
+        setProduct(nextProduct)
+      } catch (reason: unknown) {
+        if (!active) return
+        setProduct(null)
+        setError(
+          reason instanceof ApiError || reason instanceof Error
+            ? reason.message
+            : 'Unable to load product.',
+        )
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    void run()
+
+    return () => {
+      active = false
+    }
+  }, [id])
 
   if (loading)
     return (

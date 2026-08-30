@@ -11,7 +11,9 @@ export function ProtectedRoute() {
   if (status === 'checking') {
     return (
       <Card className="mx-auto mt-12 w-full max-w-md">
-        <CardHeader><CardTitle>Checking your session</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Checking your session</CardTitle>
+        </CardHeader>
         <CardContent className="space-y-3">
           <Skeleton className="h-4 w-3/4" />
           <Skeleton className="h-4 w-1/2" />
@@ -24,7 +26,9 @@ export function ProtectedRoute() {
     return (
       <Alert variant="destructive" className="mx-auto mt-12 max-w-xl">
         <AlertTitle>Unable to verify your session</AlertTitle>
-        <AlertDescription>Please refresh the page and try again.</AlertDescription>
+        <AlertDescription>
+          Please refresh the page and try again.
+        </AlertDescription>
       </Alert>
     )
   }

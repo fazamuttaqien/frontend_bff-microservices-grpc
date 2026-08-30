@@ -72,14 +72,25 @@ export function CreateOrderPage() {
       <Card>
         <CardHeader>
           <CardTitle>Create order</CardTitle>
-          <CardDescription>Add one or more products to your order.</CardDescription>
+          <CardDescription>
+            Add one or more products to your order.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={(event) => event.preventDefault()} noValidate className="space-y-6">
+          <form
+            onSubmit={(event) => event.preventDefault()}
+            noValidate
+            className="space-y-6"
+          >
             <div className="space-y-4">
               {items.map((item, index) => (
-                <fieldset key={index} className="space-y-4 rounded-lg border p-4">
-                  <legend className="px-1 text-sm font-medium">Item {index + 1}</legend>
+                <fieldset
+                  key={index}
+                  className="space-y-4 rounded-lg border p-4"
+                >
+                  <legend className="px-1 text-sm font-medium">
+                    Item {index + 1}
+                  </legend>
                   <div className="grid gap-4 sm:grid-cols-[1fr_140px_auto] sm:items-end">
                     <div className="space-y-2">
                       <Label htmlFor={`product-${index}`}>Product ID</Label>
@@ -89,7 +100,9 @@ export function CreateOrderPage() {
                         onChange={(e) =>
                           setItems((current) =>
                             current.map((x, i) =>
-                              i === index ? { ...x, product_id: e.target.value } : x,
+                              i === index
+                                ? { ...x, product_id: e.target.value }
+                                : x,
                             ),
                           )
                         }
@@ -121,7 +134,9 @@ export function CreateOrderPage() {
                         type="button"
                         variant="outline"
                         onClick={() =>
-                          setItems((current) => current.filter((_, i) => i !== index))
+                          setItems((current) =>
+                            current.filter((_, i) => i !== index),
+                          )
                         }
                       >
                         Remove
@@ -137,7 +152,10 @@ export function CreateOrderPage() {
                 type="button"
                 variant="outline"
                 onClick={() =>
-                  setItems((current) => [...current, { product_id: '', quantity: 1 }])
+                  setItems((current) => [
+                    ...current,
+                    { product_id: '', quantity: 1 },
+                  ])
                 }
               >
                 Add item
@@ -152,7 +170,8 @@ export function CreateOrderPage() {
                 <DialogContent>
                   <DialogTitle>Confirm order</DialogTitle>
                   <DialogDescription>
-                    This will create the order with {items.length} item{items.length === 1 ? '' : 's'}. Continue?
+                    This will create the order with {items.length} item
+                    {items.length === 1 ? '' : 's'}. Continue?
                   </DialogDescription>
                   <div className="flex justify-end gap-2">
                     <Button
@@ -163,7 +182,11 @@ export function CreateOrderPage() {
                     >
                       Cancel
                     </Button>
-                    <Button type="button" disabled={submitting} onClick={() => void submit()}>
+                    <Button
+                      type="button"
+                      disabled={submitting}
+                      onClick={() => void submit()}
+                    >
                       {submitting ? 'Creating…' : 'Confirm order'}
                     </Button>
                   </div>

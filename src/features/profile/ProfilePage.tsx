@@ -41,12 +41,20 @@ export function ProfilePage() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-3xl space-y-6" aria-labelledby="profile-title">
+    <section
+      className="mx-auto w-full max-w-3xl space-y-6"
+      aria-labelledby="profile-title"
+    >
       <div>
-        <h1 id="profile-title" className="text-2xl font-semibold tracking-tight">
+        <h1
+          id="profile-title"
+          className="text-2xl font-semibold tracking-tight"
+        >
           Profile
         </h1>
-        <p className="text-muted-foreground">Manage and view your account information.</p>
+        <p className="text-muted-foreground">
+          Manage and view your account information.
+        </p>
       </div>
 
       {loading && <ProfileSkeleton />}
@@ -55,7 +63,9 @@ export function ProfilePage() {
         <Card>
           <CardHeader>
             <CardTitle>Unable to load profile</CardTitle>
-            <CardDescription>Please try again. Your account session may need to be verified.</CardDescription>
+            <CardDescription>
+              Please try again. Your account session may need to be verified.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Alert>{error}</Alert>
@@ -72,10 +82,14 @@ export function ProfilePage() {
         <Card>
           <CardHeader>
             <CardTitle>Profile unavailable</CardTitle>
-            <CardDescription>Your profile information is not available right now.</CardDescription>
+            <CardDescription>
+              Your profile information is not available right now.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">Please try again later.</p>
+            <p className="text-sm text-muted-foreground">
+              Please try again later.
+            </p>
           </CardContent>
         </Card>
       )}
@@ -90,7 +104,11 @@ export function ProfilePage() {
             <UserInformation user={user} />
           </CardContent>
           <CardFooter className="justify-end">
-            <Button type="button" variant="outline" onClick={() => void handleLogout()}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void handleLogout()}
+            >
               Logout
             </Button>
           </CardFooter>

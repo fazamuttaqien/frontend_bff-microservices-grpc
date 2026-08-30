@@ -79,8 +79,32 @@ export function useOrders(page = 1, pageSize = 20) {
   }, [page, pageSize])
 
   useEffect(() => {
-    void load()
-  }, [load])
+    let active = true
+
+    const run = async () => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        const result = await fetchList(page, pageSize)
+        if (!active) return
+        setOrders(result.orders)
+        setTotal(result.total)
+      } catch (reason) {
+        if (!active) return
+        setOrders([])
+        setError(messageOf(reason))
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    void run()
+
+    return () => {
+      active = false
+    }
+  }, [page, pageSize])
 
   return { orders, total, loading, error, reload: load }
 }
@@ -110,8 +134,38 @@ export function useOrder(id: string | null) {
   }, [id])
 
   useEffect(() => {
-    void load()
-  }, [load])
+    let active = true
+
+    const run = async () => {
+      if (!id) {
+        setData(null)
+        setLoading(false)
+        setError(null)
+        return
+      }
+
+      setLoading(true)
+      setError(null)
+
+      try {
+        const detail = await fetchDetail(id)
+        if (!active) return
+        setData(detail)
+      } catch (reason) {
+        if (!active) return
+        setData(null)
+        setError(messageOf(reason))
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    void run()
+
+    return () => {
+      active = false
+    }
+  }, [id])
 
   return { data, loading, error, reload: load }
 }

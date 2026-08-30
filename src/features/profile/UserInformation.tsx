@@ -21,7 +21,9 @@ export function UserInformation({ user }: UserInformationProps) {
         <dd>{user.email || '—'}</dd>
       </div>
       <div className="grid gap-1 px-4 py-3 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-4">
-        <dt className="text-sm font-medium text-muted-foreground">Member since</dt>
+        <dt className="text-sm font-medium text-muted-foreground">
+          Member since
+        </dt>
         <dd>
           <Badge variant="secondary">{memberSince}</Badge>
         </dd>
