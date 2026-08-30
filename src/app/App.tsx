@@ -1,11 +1,15 @@
+import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
-import { AuthProvider } from '../features/auth/AuthProvider'
+import { useAppDispatch } from './hooks'
 import { router } from './router'
+import { bootstrapAuthentication } from '../features/auth/useAuth'
 
 export function App() {
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  )
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    void bootstrapAuthentication(dispatch)
+  }, [dispatch])
+
+  return <RouterProvider router={router} />
 }
