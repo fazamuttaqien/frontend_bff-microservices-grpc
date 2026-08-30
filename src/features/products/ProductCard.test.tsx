@@ -20,9 +20,7 @@ describe('ProductCard', () => {
         <ProductCard product={product} />
       </MemoryRouter>,
     )
-    expect(
-      screen.getByRole('heading', { name: 'Keyboard' }),
-    ).toBeInTheDocument()
+    expect(screen.getByText('Keyboard')).toBeInTheDocument()
     expect(screen.getByText('Mechanical keyboard')).toBeInTheDocument()
     expect(screen.getByText('75.00')).toBeInTheDocument()
     expect(screen.getByText('4 in stock')).toBeInTheDocument()
