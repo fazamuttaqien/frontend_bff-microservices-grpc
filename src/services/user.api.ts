@@ -1,6 +1,10 @@
-import { request } from '../lib/api'
+import { apiRequest } from '../lib/api-client'
 import type { User } from '../types/api'
 
 export const userApi = {
-  me: (token: string) => request<User>('/api/v1/users/me', { token }),
+  me: () =>
+    apiRequest<User>({
+      url: '/api/v1/users/me',
+      method: 'GET',
+    }),
 }

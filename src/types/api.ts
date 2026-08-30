@@ -21,12 +21,6 @@ export interface RegisterInput {
   password: string
 }
 
-export interface AuthResponse {
-  access_token: string
-  expires_at: number
-  user: User
-}
-
 export interface Product {
   id: string
   name: string

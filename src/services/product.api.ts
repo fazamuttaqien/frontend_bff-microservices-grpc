@@ -1,9 +1,16 @@
-import { request } from '../lib/api'
+import { apiRequest } from '../lib/api-client'
 import type { Product, ProductList } from '../types/api'
 
 export const productApi = {
   list: (page = 1, pageSize = 20) =>
-    request<ProductList>(`/api/v1/products?page=${page}&page_size=${pageSize}`),
+    apiRequest<ProductList>({
+      url: '/api/v1/products',
+      method: 'GET',
+      params: { page, page_size: pageSize },
+    }),
   get: (id: string) =>
-    request<Product>(`/api/v1/products/${encodeURIComponent(id)}`),
+    apiRequest<Product>({
+      url: `/api/v1/products/${encodeURIComponent(id)}`,
+      method: 'GET',
+    }),
 }

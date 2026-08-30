@@ -1,4 +1,4 @@
-import { request } from '../lib/api'
+import { apiRequest } from '../lib/api-client'
 import type {
   CreateOrderInput,
   Order,
@@ -7,22 +7,24 @@ import type {
 } from '../types/api'
 
 export const orderApi = {
-  create(input: CreateOrderInput, token: string) {
-    return request<Order>('/api/v1/orders', {
+  create(input: CreateOrderInput) {
+    return apiRequest<Order>({
+      url: '/api/v1/orders',
       method: 'POST',
-      body: input,
-      token,
+      data: input,
     })
   },
-  list(token: string, page = 1, pageSize = 20) {
-    return request<OrderList>(
-      `/api/v1/orders?page=${page}&page_size=${pageSize}`,
-      { token },
-    )
+  list(page = 1, pageSize = 20) {
+    return apiRequest<OrderList>({
+      url: '/api/v1/orders',
+      method: 'GET',
+      params: { page, page_size: pageSize },
+    })
   },
-  get(id: string, token: string) {
-    return request<OrderDetail>(`/api/v1/orders/${encodeURIComponent(id)}`, {
-      token,
+  get(id: string) {
+    return apiRequest<OrderDetail>({
+      url: `/api/v1/orders/${encodeURIComponent(id)}`,
+      method: 'GET',
     })
   },
 }

@@ -9,10 +9,9 @@ import {
 } from 'react'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { clearAuthState, setAuthState, type AuthStatus } from './authSlice'
-import { ApiError } from '../../lib/api'
+import { ApiError } from '../../lib/api-client'
 import { authApi } from '../../services/auth.api'
 import type { LoginInput, RegisterInput, User } from '../../types/api'
-import { authStorage } from './auth.storage'
 import { invalidateOrderCache } from '../orders/useOrders'
 
 interface AuthContextValue {
@@ -29,7 +28,6 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 
 function messageFromError(error: unknown): string {
   if (error instanceof ApiError) return error.message
-  if (error instanceof Error) return error.message
   return 'An unexpected authentication error occurred'
 }
 
@@ -39,15 +37,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const token = authStorage.getToken()
-    if (!token) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      dispatch(setAuthState({ user: null, status: 'unauthenticated' }))
-      return
-    }
     let active = true
     void authApi
-      .me(token)
+      .me()
       .then((currentUser) => {
         if (!active) return
         dispatch(
@@ -56,10 +48,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
       })
       .catch((reason: unknown) => {
         if (!active) return
-        authStorage.clear()
         invalidateOrderCache()
         dispatch(setAuthState({ user: null, status: 'unauthenticated' }))
-        if (!(reason instanceof ApiError && reason.status === 401))
+        if (!(reason instanceof ApiError && reason.code === 'unauthenticated'))
           setError(messageFromError(reason))
       })
     return () => {
@@ -72,7 +63,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setError(null)
       const response = await authApi.login(input)
       invalidateOrderCache()
-      authStorage.setToken(response.access_token)
       dispatch(
         setAuthState({ user: response.user, status: 'authenticated' }),
       )
@@ -86,17 +76,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [])
 
   const logout = useCallback(async () => {
-    const token = authStorage.getToken()
     setError(null)
-    if (token) {
-      try {
-        await authApi.logout(token)
-      } catch (reason: unknown) {
-        if (!(reason instanceof ApiError && reason.status === 401))
-          setError(messageFromError(reason))
-      }
+    try {
+      await authApi.logout()
+    } catch (reason: unknown) {
+      if (!(reason instanceof ApiError && reason.code === 'unauthenticated'))
+        setError(messageFromError(reason))
     }
-    authStorage.clear()
     invalidateOrderCache()
     dispatch(clearAuthState())
   }, [dispatch])

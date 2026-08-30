@@ -1,29 +1,35 @@
-import { request } from '../lib/api'
-import type {
-  AuthResponse,
-  LoginInput,
-  RegisterInput,
-  User,
-} from '../types/api'
+import { apiRequest } from '../lib/api-client'
+import type { LoginInput, RegisterInput, User } from '../types/api'
+
+export interface LoginResponse {
+  expires_at: number
+  user: User
+}
 
 export const authApi = {
   register: (input: RegisterInput) =>
-    request<User>('/api/v1/auth/register', {
+    apiRequest<User>({
+      url: '/api/v1/auth/register',
       method: 'POST',
-      body: input,
+      data: input,
     }),
 
   login: (input: LoginInput) =>
-    request<AuthResponse>('/api/v1/auth/login', {
+    apiRequest<LoginResponse>({
+      url: '/api/v1/auth/login',
       method: 'POST',
-      body: input,
+      data: input,
     }),
 
-  logout: (token: string) =>
-    request<void>('/api/v1/auth/logout', {
+  logout: () =>
+    apiRequest<void>({
+      url: '/api/v1/auth/logout',
       method: 'POST',
-      token,
     }),
 
-  me: (token: string) => request<User>('/api/v1/users/me', { token }),
+  me: () =>
+    apiRequest<User>({
+      url: '/api/v1/users/me',
+      method: 'GET',
+    }),
 }
