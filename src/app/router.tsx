@@ -7,6 +7,9 @@ import { RegisterPage } from '../features/auth/RegisterPage'
 import { ProfilePage } from '../features/profile/ProfilePage'
 import { ProductDetailPage } from '../features/products/ProductDetailPage'
 import { ProductsPage } from '../features/products/ProductsPage'
+import { CreateOrderPage } from '../features/orders/CreateOrderPage'
+import { OrderDetailPage } from '../features/orders/OrderDetailPage'
+import { OrdersPage } from '../features/orders/OrdersPage'
 import { AppLayout } from './layouts/AppLayout'
 import { PublicLayout } from './layouts/PublicLayout'
 
@@ -25,8 +28,9 @@ export const router = createBrowserRouter([
       { path: '/dashboard', element: <PlaceholderPage title="Dashboard" /> },
       { path: '/products', element: <ProductsPage /> },
       { path: '/products/:id', element: <ProductDetailPage /> },
-      { path: '/orders', element: <PlaceholderPage title="Orders" /> },
-      { path: '/orders/:id', element: <PlaceholderPage title="Order Detail" /> },
+      { path: '/orders', element: <OrdersPage /> },
+      { path: '/orders/new', element: <CreateOrderPage /> },
+      { path: '/orders/:id', element: <OrderDetailPage /> },
       { path: '/profile', element: <ProfilePage /> },
     ] }],
   },
