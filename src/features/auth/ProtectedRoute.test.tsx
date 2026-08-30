@@ -1,38 +1,39 @@
 import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { configureStore } from '@reduxjs/toolkit'
+import { describe, expect, it } from 'vitest'
+import authReducer, { type AuthStatus } from './authSlice'
 import { ProtectedRoute } from './ProtectedRoute'
 
-let status: 'loading' | 'authenticated' | 'unauthenticated' = 'unauthenticated'
-vi.mock('./AuthProvider', () => ({ useAuth: () => ({ status }) }))
+function renderRoute(status: AuthStatus) {
+  const store = configureStore({
+    reducer: { auth: authReducer },
+    preloadedState: { auth: { status, currentUser: null, error: null } },
+  })
+
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={['/private']}>
+        <Routes>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/private" element={<p>Private page</p>} />
+          </Route>
+          <Route path="/login" element={<p>Login page</p>} />
+        </Routes>
+      </MemoryRouter>
+    </Provider>,
+  )
+}
 
 describe('ProtectedRoute', () => {
   it('redirects unauthenticated users to login', () => {
-    status = 'unauthenticated'
-    render(
-      <MemoryRouter initialEntries={['/private']}>
-        <Routes>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/private" element={<p>Private</p>} />
-          </Route>
-          <Route path="/login" element={<p>Login</p>} />
-        </Routes>
-      </MemoryRouter>,
-    )
-    expect(screen.getByText('Login')).toBeInTheDocument()
+    renderRoute('unauthenticated')
+    expect(screen.getByText('Login page')).toBeInTheDocument()
   })
 
   it('renders protected content when authenticated', () => {
-    status = 'authenticated'
-    render(
-      <MemoryRouter initialEntries={['/private']}>
-        <Routes>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/private" element={<p>Private</p>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
-    )
-    expect(screen.getByText('Private')).toBeInTheDocument()
+    renderRoute('authenticated')
+    expect(screen.getByText('Private page')).toBeInTheDocument()
   })
 })
