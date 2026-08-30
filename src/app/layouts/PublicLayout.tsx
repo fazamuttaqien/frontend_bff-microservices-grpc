@@ -5,8 +5,8 @@ export function PublicLayout() {
     <div>
       <header>
         <nav aria-label="Public navigation">
-          <NavLink to="/">Home</NavLink> | <NavLink to="/login">Login</NavLink> |{' '}
-          <NavLink to="/register">Register</NavLink>
+          <NavLink to="/">Home</NavLink> | <NavLink to="/login">Login</NavLink>{' '}
+          | <NavLink to="/register">Register</NavLink>
         </nav>
       </header>
       <main>

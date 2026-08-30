@@ -17,9 +17,15 @@ export const router = createBrowserRouter([
     children: [
       { path: '/dashboard', element: <PlaceholderPage title="Dashboard" /> },
       { path: '/products', element: <PlaceholderPage title="Products" /> },
-      { path: '/products/:id', element: <PlaceholderPage title="Product Detail" /> },
+      {
+        path: '/products/:id',
+        element: <PlaceholderPage title="Product Detail" />,
+      },
       { path: '/orders', element: <PlaceholderPage title="Orders" /> },
-      { path: '/orders/:id', element: <PlaceholderPage title="Order Detail" /> },
+      {
+        path: '/orders/:id',
+        element: <PlaceholderPage title="Order Detail" />,
+      },
       { path: '/profile', element: <PlaceholderPage title="Profile" /> },
     ],
   },
