@@ -1,6 +1,5 @@
 import type { User } from '@/types/api'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 
 interface UserInformationProps {
   user: User
@@ -17,12 +16,10 @@ export function UserInformation({ user }: UserInformationProps) {
         <dt className="text-sm font-medium text-muted-foreground">Name</dt>
         <dd className="font-medium">{user.name || '—'}</dd>
       </div>
-      <Separator className="sm:hidden" />
       <div className="grid gap-1 px-4 py-3 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-4">
         <dt className="text-sm font-medium text-muted-foreground">Email</dt>
         <dd>{user.email || '—'}</dd>
       </div>
-      <Separator className="sm:hidden" />
       <div className="grid gap-1 px-4 py-3 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-4">
         <dt className="text-sm font-medium text-muted-foreground">Member since</dt>
         <dd>
