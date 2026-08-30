@@ -7,13 +7,13 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { clearAuthState, setAuthState, type AuthStatus } from './authSlice'
 import { ApiError } from '../../lib/api'
 import { authApi } from '../../services/auth.api'
 import type { LoginInput, RegisterInput, User } from '../../types/api'
 import { authStorage } from './auth.storage'
 import { invalidateOrderCache } from '../orders/useOrders'
-
-type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated'
 
 interface AuthContextValue {
   user: User | null
@@ -34,15 +34,15 @@ function messageFromError(error: unknown): string {
 }
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>(null)
-  const [status, setStatus] = useState<AuthStatus>('loading')
+  const dispatch = useAppDispatch()
+  const { user, status } = useAppSelector((state) => state.auth)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const token = authStorage.getToken()
     if (!token) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setStatus('unauthenticated')
+      dispatch(setAuthState({ user: null, status: 'unauthenticated' }))
       return
     }
     let active = true
@@ -50,31 +50,35 @@ export function AuthProvider({ children }: PropsWithChildren) {
       .me(token)
       .then((currentUser) => {
         if (!active) return
-        setUser(currentUser)
-        setStatus('authenticated')
+        dispatch(
+          setAuthState({ user: currentUser, status: 'authenticated' }),
+        )
       })
       .catch((reason: unknown) => {
         if (!active) return
         authStorage.clear()
         invalidateOrderCache()
-        setUser(null)
-        setStatus('unauthenticated')
+        dispatch(setAuthState({ user: null, status: 'unauthenticated' }))
         if (!(reason instanceof ApiError && reason.status === 401))
           setError(messageFromError(reason))
       })
     return () => {
       active = false
     }
-  }, [])
+  }, [dispatch])
 
-  const login = useCallback(async (input: LoginInput) => {
-    setError(null)
-    const response = await authApi.login(input)
-    invalidateOrderCache()
-    authStorage.setToken(response.access_token)
-    setUser(response.user)
-    setStatus('authenticated')
-  }, [])
+  const login = useCallback(
+    async (input: LoginInput) => {
+      setError(null)
+      const response = await authApi.login(input)
+      invalidateOrderCache()
+      authStorage.setToken(response.access_token)
+      dispatch(
+        setAuthState({ user: response.user, status: 'authenticated' }),
+      )
+    },
+    [dispatch],
+  )
 
   const register = useCallback(async (input: RegisterInput) => {
     setError(null)
@@ -94,9 +98,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
     authStorage.clear()
     invalidateOrderCache()
-    setUser(null)
-    setStatus('unauthenticated')
-  }, [])
+    dispatch(clearAuthState())
+  }, [dispatch])
 
   const clearError = useCallback(() => setError(null), [])
   const value = useMemo(
