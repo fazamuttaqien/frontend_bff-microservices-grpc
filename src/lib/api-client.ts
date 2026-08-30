@@ -27,14 +27,14 @@ export class ApiError extends Error {
 }
 
 const messages: Record<ApiErrorCode, string> = {
-  network_error: 'Unable to reach the BFF server',
-  unauthenticated: 'Authentication is required',
-  forbidden: 'You do not have permission to perform this action',
-  not_found: 'The requested resource was not found',
-  conflict: 'The request conflicts with the current resource state',
-  validation_error: 'Please check the submitted information',
-  server_error: 'The server could not complete the request',
-  unknown_error: 'An unexpected error occurred',
+  network_error: 'Unable to reach the server. Check your connection and try again.',
+  unauthenticated: 'Please sign in to continue.',
+  forbidden: 'You do not have permission to perform this action.',
+  not_found: 'The requested information could not be found.',
+  conflict: 'This action could not be completed because the information has changed.',
+  validation_error: 'Please check the information and try again.',
+  server_error: 'The server could not complete your request. Please try again later.',
+  unknown_error: 'Something went wrong. Please try again.',
 }
 
 function normalizeStatus(status?: number): ApiErrorCode {
@@ -43,7 +43,7 @@ function normalizeStatus(status?: number): ApiErrorCode {
   if (status === 403) return 'forbidden'
   if (status === 404) return 'not_found'
   if (status === 409) return 'conflict'
-  if (status === 422) return 'validation_error'
+  if (status === 400 || status === 422) return 'validation_error'
   if (status >= 500) return 'server_error'
   return 'unknown_error'
 }
