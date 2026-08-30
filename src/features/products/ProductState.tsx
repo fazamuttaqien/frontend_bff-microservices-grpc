@@ -1,3 +1,7 @@
+import { Alert } from '../../components/ui/alert'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent } from '../../components/ui/card'
+
 interface ProductStateProps {
   message: string
   actionLabel?: string
@@ -10,19 +14,27 @@ export function ProductError({
   onAction,
 }: ProductStateProps) {
   return (
-    <div className="product-state product-state--error" role="alert">
-      <strong>Unable to load products</strong>
-      <p>{message}</p>
-      {onAction && <button onClick={onAction}>{actionLabel}</button>}
-    </div>
+    <Alert className="flex flex-col gap-3 border-destructive/50 text-center sm:items-center">
+      <strong className="font-semibold">Unable to load products</strong>
+      <p className="text-muted-foreground">{message}</p>
+      {onAction && (
+        <Button variant="outline" onClick={onAction}>
+          {actionLabel}
+        </Button>
+      )}
+    </Alert>
   )
 }
 
 export function ProductEmpty() {
   return (
-    <div className="product-state">
-      <strong>No products found</strong>
-      <p>There are no products to display.</p>
-    </div>
+    <Card>
+      <CardContent className="flex flex-col items-center justify-center gap-2 py-12 text-center">
+        <strong className="font-semibold">No products found</strong>
+        <p className="text-sm text-muted-foreground">
+          There are no products to display.
+        </p>
+      </CardContent>
+    </Card>
   )
 }
