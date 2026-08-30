@@ -1,32 +1,38 @@
-import { useCallback, useEffect, useState } from 'react'
-import { ApiError } from '../../lib/api'
-import { authApi } from '../../services/auth.api'
-import type { User } from '../../types/api'
-import { authStorage } from '../auth/auth.storage'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAppSelector } from '@/app/hooks'
+import { ApiError } from '@/lib/api-client'
+import { userApi } from '@/services/user.api'
+import type { User } from '@/types/api'
 
 function errorMessage(error: unknown) {
   if (error instanceof ApiError) return error.message
-  if (error instanceof Error) return error.message
   return 'Unable to load your profile.'
 }
 
 export function useProfile() {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const currentUser = useAppSelector((state) => state.auth.currentUser)
+  const authStatus = useAppSelector((state) => state.auth.status)
+  const [user, setUser] = useState<User | null>(currentUser)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const loadedUserId = useRef<string | null>(currentUser?.id ?? null)
+
+  useEffect(() => {
+    setUser(currentUser)
+    if (currentUser) {
+      loadedUserId.current = currentUser.id
+      setError(null)
+    }
+  }, [currentUser])
 
   const loadProfile = useCallback(async () => {
-    const token = authStorage.getToken()
-    if (!token) {
-      setUser(null)
-      setLoading(false)
-      return
-    }
-
     setLoading(true)
     setError(null)
+
     try {
-      setUser(await authApi.me(token))
+      const profile = await userApi.me()
+      loadedUserId.current = profile.id
+      setUser(profile)
     } catch (reason: unknown) {
       setUser(null)
       setError(errorMessage(reason))
@@ -36,8 +42,9 @@ export function useProfile() {
   }, [])
 
   useEffect(() => {
+    if (authStatus !== 'authenticated' || currentUser || loadedUserId.current) return
     void loadProfile()
-  }, [loadProfile])
+  }, [authStatus, currentUser, loadProfile])
 
   return { user, loading, error, reload: loadProfile }
 }
