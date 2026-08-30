@@ -9,6 +9,24 @@ export interface User {
   created_at: string
   updated_at: string
 }
+
+export interface LoginInput {
+  email: string
+  password: string
+}
+
+export interface RegisterInput {
+  name: string
+  email: string
+  password: string
+}
+
+export interface AuthResponse {
+  access_token: string
+  expires_at: number
+  user: User
+}
+
 export interface Product {
   id: string
   name: string
