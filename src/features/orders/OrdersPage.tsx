@@ -1,4 +1,6 @@
 import { Link, useSearchParams } from 'react-router-dom'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent } from '../../components/ui/card'
 import { OrderEmpty, OrderError, OrderLoading } from './OrderState'
 import { OrderSummary } from './OrderSummary'
 import { useOrders } from './useOrders'
@@ -13,14 +15,17 @@ export function OrdersPage() {
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   return (
-    <section className="page">
-      <header className="page__header">
-        <div>
-          <h1>Orders</h1>
-          <p>Your order history.</p>
+    <section className="mx-auto w-full max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Orders</h1>
+          <p className="text-muted-foreground">Your order history.</p>
         </div>
-        <Link to="/orders/new">Create order</Link>
+        <Button asChild>
+          <Link to="/orders/new">Create order</Link>
+        </Button>
       </header>
+
       {loading ? (
         <OrderLoading />
       ) : error ? (
@@ -28,36 +33,45 @@ export function OrdersPage() {
       ) : orders.length === 0 ? (
         <OrderEmpty />
       ) : (
-        <>
-          <div>
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2">
             {orders.map((order) => (
-              <div key={order.id}>
-                <Link to={`/orders/${encodeURIComponent(order.id)}`}>
-                  <OrderSummary order={order} />
-                </Link>
-              </div>
+              <Link
+                key={order.id}
+                to={`/orders/${encodeURIComponent(order.id)}`}
+                className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <OrderSummary order={order} />
+              </Link>
             ))}
           </div>
+
           {pages > 1 && (
-            <nav aria-label="Order pagination">
-              <button
-                disabled={page === 1}
-                onClick={() => setParams({ page: String(page - 1) })}
-              >
-                Previous
-              </button>
-              <span>
-                Page {page} of {pages}
-              </span>
-              <button
-                disabled={page >= pages}
-                onClick={() => setParams({ page: String(page + 1) })}
-              >
-                Next
-              </button>
-            </nav>
+            <Card>
+              <CardContent className="flex flex-col items-center justify-between gap-3 pt-6 sm:flex-row">
+                <p className="text-muted-foreground text-sm" aria-live="polite">
+                  Page {page} of {pages}
+                </p>
+                <nav aria-label="Order pagination" className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    disabled={page === 1}
+                    onClick={() => setParams({ page: String(page - 1) })}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outline"
+                    disabled={page >= pages}
+                    onClick={() => setParams({ page: String(page + 1) })}
+                  >
+                    Next
+                  </Button>
+                </nav>
+              </CardContent>
+            </Card>
           )}
-        </>
+        </div>
       )}
     </section>
   )
