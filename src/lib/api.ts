@@ -32,17 +32,27 @@ export async function request<T>(
   options: RequestOptions = {},
 ): Promise<T> {
   const { body, headers, token, ...init } = options
-  const response = await fetch(`${baseUrl}${path}`, {
-    ...init,
-    headers: {
-      Accept: 'application/json',
-      ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...headers,
-    },
-    credentials: 'include',
-    body: body === undefined ? undefined : JSON.stringify(body),
-  })
+  let response: Response
+
+  try {
+    response = await fetch(`${baseUrl}${path}`, {
+      ...init,
+      headers: {
+        Accept: 'application/json',
+        ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...headers,
+      },
+      credentials: 'include',
+      body: body === undefined ? undefined : JSON.stringify(body),
+    })
+  } catch {
+    throw new ApiError(0, 'Unable to reach the authentication server')
+  }
+
+  if (response.status === 204) {
+    return undefined as T
+  }
 
   const contentType = response.headers.get('content-type') ?? ''
   const data: unknown = contentType.includes('application/json')
