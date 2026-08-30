@@ -19,17 +19,42 @@ export function ProductDetailPage() {
       setProduct(await productApi.get(id))
     } catch (reason: unknown) {
       setProduct(null)
-      setError(reason instanceof ApiError || reason instanceof Error ? reason.message : 'Unable to load product.')
+      setError(
+        reason instanceof ApiError || reason instanceof Error
+          ? reason.message
+          : 'Unable to load product.',
+      )
     } finally {
       setLoading(false)
     }
   }, [id])
 
-  useEffect(() => { void load() }, [load])
+  useEffect(() => {
+    void load()
+  }, [load])
 
-  if (loading) return <section className="page"><ProductLoading count={1} /></section>
-  if (error) return <section className="page"><ProductError message={error} onAction={() => void load()} /></section>
-  if (!product) return <section className="page"><ProductError message="Product was not found." actionLabel="Back to products" onAction={() => window.history.back()} /></section>
+  if (loading)
+    return (
+      <section className="page">
+        <ProductLoading count={1} />
+      </section>
+    )
+  if (error)
+    return (
+      <section className="page">
+        <ProductError message={error} onAction={() => void load()} />
+      </section>
+    )
+  if (!product)
+    return (
+      <section className="page">
+        <ProductError
+          message="Product was not found."
+          actionLabel="Back to products"
+          onAction={() => window.history.back()}
+        />
+      </section>
+    )
 
   return (
     <section className="page product-detail">
@@ -38,8 +63,14 @@ export function ProductDetailPage() {
         <h1>{product.name}</h1>
         <p>{product.description || 'No description available.'}</p>
         <dl>
-          <div><dt>Price</dt><dd>{product.price}</dd></div>
-          <div><dt>Stock</dt><dd>{product.stock}</dd></div>
+          <div>
+            <dt>Price</dt>
+            <dd>{product.price}</dd>
+          </div>
+          <div>
+            <dt>Stock</dt>
+            <dd>{product.stock}</dd>
+          </div>
         </dl>
       </article>
     </section>

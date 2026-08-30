@@ -16,7 +16,9 @@ export function ProductCard({ product }: ProductCardProps) {
         <strong>{product.price}</strong>
         <span>{product.stock} in stock</span>
       </div>
-      <Link to={`/products/${encodeURIComponent(product.id)}`}>View details</Link>
+      <Link to={`/products/${encodeURIComponent(product.id)}`}>
+        View details
+      </Link>
     </article>
   )
 }

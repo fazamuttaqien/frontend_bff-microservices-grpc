@@ -25,7 +25,9 @@ export function ProfilePage() {
           </button>
         </div>
       )}
-      {!loading && !error && !user && <p>Your profile information is unavailable.</p>}
+      {!loading && !error && !user && (
+        <p>Your profile information is unavailable.</p>
+      )}
       {!loading && !error && user && <UserInformation user={user} />}
       <button type="button" onClick={handleLogout}>
         Logout

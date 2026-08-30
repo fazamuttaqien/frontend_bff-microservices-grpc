@@ -46,37 +46,63 @@ export function AuthProvider({ children }: PropsWithChildren) {
       return
     }
     let active = true
-    void authApi.me(token).then((currentUser) => {
-      if (!active) return
-      setUser(currentUser); setStatus('authenticated')
-    }).catch((reason: unknown) => {
-      if (!active) return
-      authStorage.clear(); invalidateOrderCache(); setUser(null); setStatus('unauthenticated')
-      if (!(reason instanceof ApiError && reason.status === 401)) setError(messageFromError(reason))
-    })
-    return () => { active = false }
+    void authApi
+      .me(token)
+      .then((currentUser) => {
+        if (!active) return
+        setUser(currentUser)
+        setStatus('authenticated')
+      })
+      .catch((reason: unknown) => {
+        if (!active) return
+        authStorage.clear()
+        invalidateOrderCache()
+        setUser(null)
+        setStatus('unauthenticated')
+        if (!(reason instanceof ApiError && reason.status === 401))
+          setError(messageFromError(reason))
+      })
+    return () => {
+      active = false
+    }
   }, [])
 
   const login = useCallback(async (input: LoginInput) => {
     setError(null)
     const response = await authApi.login(input)
     invalidateOrderCache()
-    authStorage.setToken(response.access_token); setUser(response.user); setStatus('authenticated')
+    authStorage.setToken(response.access_token)
+    setUser(response.user)
+    setStatus('authenticated')
   }, [])
 
-  const register = useCallback(async (input: RegisterInput) => { setError(null); return authApi.register(input) }, [])
+  const register = useCallback(async (input: RegisterInput) => {
+    setError(null)
+    return authApi.register(input)
+  }, [])
 
   const logout = useCallback(async () => {
-    const token = authStorage.getToken(); setError(null)
+    const token = authStorage.getToken()
+    setError(null)
     if (token) {
-      try { await authApi.logout(token) }
-      catch (reason: unknown) { if (!(reason instanceof ApiError && reason.status === 401)) setError(messageFromError(reason)) }
+      try {
+        await authApi.logout(token)
+      } catch (reason: unknown) {
+        if (!(reason instanceof ApiError && reason.status === 401))
+          setError(messageFromError(reason))
+      }
     }
-    authStorage.clear(); invalidateOrderCache(); setUser(null); setStatus('unauthenticated')
+    authStorage.clear()
+    invalidateOrderCache()
+    setUser(null)
+    setStatus('unauthenticated')
   }, [])
 
   const clearError = useCallback(() => setError(null), [])
-  const value = useMemo(() => ({ user, status, error, login, register, logout, clearError }), [user, status, error, login, register, logout, clearError])
+  const value = useMemo(
+    () => ({ user, status, error, login, register, logout, clearError }),
+    [user, status, error, login, register, logout, clearError],
+  )
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 

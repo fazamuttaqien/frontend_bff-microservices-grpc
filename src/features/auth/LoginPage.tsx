@@ -11,13 +11,22 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [touched, setTouched] = useState({ email: false, password: false })
-  const emailError = touched.email && !email.trim() ? 'Email is required.' : touched.email && !/^\S+@\S+\.\S+$/.test(email) ? 'Enter a valid email address.' : null
-  const passwordError = touched.password && password.length < 8 ? 'Password must be at least 8 characters.' : null
+  const emailError =
+    touched.email && !email.trim()
+      ? 'Email is required.'
+      : touched.email && !/^\S+@\S+\.\S+$/.test(email)
+        ? 'Enter a valid email address.'
+        : null
+  const passwordError =
+    touched.password && password.length < 8
+      ? 'Password must be at least 8 characters.'
+      : null
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setTouched({ email: true, password: true })
-    if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email) || password.length < 8) return
+    if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email) || password.length < 8)
+      return
     setError(null)
     setSubmitting(true)
     try {
@@ -38,13 +47,54 @@ export function LoginPage() {
       <h1>Login</h1>
       {error && <p role="alert">{error}</p>}
       <form onSubmit={handleSubmit} noValidate>
-        <label>Email<input name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} onBlur={() => setTouched((value) => ({ ...value, email: true }))} aria-invalid={Boolean(emailError)} aria-describedby={emailError ? 'email-error' : undefined} required /></label>
-        {emailError && <p id="email-error" role="alert">{emailError}</p>}
-        <label>Password<input name="password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} onBlur={() => setTouched((value) => ({ ...value, password: true }))} aria-invalid={Boolean(passwordError)} aria-describedby={passwordError ? 'password-error' : undefined} required /></label>
-        {passwordError && <p id="password-error" role="alert">{passwordError}</p>}
-        <button type="submit" disabled={submitting || Boolean(emailError) || Boolean(passwordError)}>{submitting ? 'Signing in…' : 'Sign in'}</button>
+        <label>
+          Email
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            onBlur={() => setTouched((value) => ({ ...value, email: true }))}
+            aria-invalid={Boolean(emailError)}
+            aria-describedby={emailError ? 'email-error' : undefined}
+            required
+          />
+        </label>
+        {emailError && (
+          <p id="email-error" role="alert">
+            {emailError}
+          </p>
+        )}
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            onBlur={() => setTouched((value) => ({ ...value, password: true }))}
+            aria-invalid={Boolean(passwordError)}
+            aria-describedby={passwordError ? 'password-error' : undefined}
+            required
+          />
+        </label>
+        {passwordError && (
+          <p id="password-error" role="alert">
+            {passwordError}
+          </p>
+        )}
+        <button
+          type="submit"
+          disabled={submitting || Boolean(emailError) || Boolean(passwordError)}
+        >
+          {submitting ? 'Signing in…' : 'Sign in'}
+        </button>
       </form>
-      <p>Don't have an account? <Link to="/register">Register</Link></p>
+      <p>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
     </section>
   )
 }

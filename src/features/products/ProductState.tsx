@@ -4,7 +4,11 @@ interface ProductStateProps {
   onAction?: () => void
 }
 
-export function ProductError({ message, actionLabel = 'Try again', onAction }: ProductStateProps) {
+export function ProductError({
+  message,
+  actionLabel = 'Try again',
+  onAction,
+}: ProductStateProps) {
   return (
     <div className="product-state product-state--error" role="alert">
       <strong>Unable to load products</strong>

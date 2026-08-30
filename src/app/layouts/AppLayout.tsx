@@ -28,12 +28,22 @@ export function AppLayout() {
   return (
     <div>
       <header>
-        <nav aria-label="Application navigation">{navigation.map((item) => <NavLink key={item.to} to={item.to}>{item.label}</NavLink>)}</nav>
+        <nav aria-label="Application navigation">
+          {navigation.map((item) => (
+            <NavLink key={item.to} to={item.to}>
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
         <span>{user?.email}</span>
-        <button type="button" onClick={handleLogout} disabled={loggingOut}>{loggingOut ? 'Logging out…' : 'Logout'}</button>
+        <button type="button" onClick={handleLogout} disabled={loggingOut}>
+          {loggingOut ? 'Logging out…' : 'Logout'}
+        </button>
         {error && <p role="alert">{error}</p>}
       </header>
-      <main><Outlet /></main>
+      <main>
+        <Outlet />
+      </main>
     </div>
   )
 }

@@ -10,7 +10,10 @@ export function ProductsPage() {
   const [params, setParams] = useSearchParams()
   const rawPage = Number(params.get('page') ?? '1')
   const page = Number.isInteger(rawPage) && rawPage > 0 ? rawPage : 1
-  const { products, total, loading, error, reload } = useProducts(page, PAGE_SIZE)
+  const { products, total, loading, error, reload } = useProducts(
+    page,
+    PAGE_SIZE,
+  )
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   const setPage = (nextPage: number) => {
@@ -35,13 +38,24 @@ export function ProductsPage() {
       ) : (
         <>
           <div className="product-grid">
-            {products.map((product) => <ProductCard key={product.id} product={product} />)}
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
           {pageCount > 1 && (
             <nav className="pagination" aria-label="Product pagination">
-              <button disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</button>
-              <span>Page {page} of {pageCount}</span>
-              <button disabled={page >= pageCount} onClick={() => setPage(page + 1)}>Next</button>
+              <button disabled={page <= 1} onClick={() => setPage(page - 1)}>
+                Previous
+              </button>
+              <span>
+                Page {page} of {pageCount}
+              </span>
+              <button
+                disabled={page >= pageCount}
+                onClick={() => setPage(page + 1)}
+              >
+                Next
+              </button>
             </nav>
           )}
         </>

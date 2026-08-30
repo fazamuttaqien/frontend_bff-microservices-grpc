@@ -17,7 +17,8 @@ export function OrderSummary({ order, products = [] }: OrderSummaryProps) {
       <ul>
         {order.items.map((item) => (
           <li key={item.product_id}>
-            {names.get(item.product_id) ?? item.product_id} — quantity {item.quantity} — price {item.price} — total {item.total}
+            {names.get(item.product_id) ?? item.product_id} — quantity{' '}
+            {item.quantity} — price {item.price} — total {item.total}
           </li>
         ))}
       </ul>

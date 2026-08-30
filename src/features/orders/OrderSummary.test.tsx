@@ -13,7 +13,22 @@ const order = {
 
 describe('OrderSummary', () => {
   it('renders order details and item information', () => {
-    render(<MemoryRouter><OrderSummary order={order} products={[{ id: 'p-1', name: 'Keyboard', description: '', price: '75.00', stock: 3 }]} /></MemoryRouter>)
+    render(
+      <MemoryRouter>
+        <OrderSummary
+          order={order}
+          products={[
+            {
+              id: 'p-1',
+              name: 'Keyboard',
+              description: '',
+              price: '75.00',
+              stock: 3,
+            },
+          ]}
+        />
+      </MemoryRouter>,
+    )
     expect(screen.getByText('Order #ord-1')).toBeInTheDocument()
     expect(screen.getByText('pending')).toBeInTheDocument()
     expect(screen.getByText(/Keyboard/)).toBeInTheDocument()

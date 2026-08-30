@@ -17,7 +17,9 @@ export function UserInformation({ user }: UserInformationProps) {
       </div>
       <div>
         <dt>Member since</dt>
-        <dd>{user.created_at ? new Date(user.created_at).toLocaleString() : '—'}</dd>
+        <dd>
+          {user.created_at ? new Date(user.created_at).toLocaleString() : '—'}
+        </dd>
       </div>
     </dl>
   )
