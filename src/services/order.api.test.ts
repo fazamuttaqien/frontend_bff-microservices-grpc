@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { orderApi } from './order.api'
 
-const request = vi.fn()
+const { request } = vi.hoisted(() => ({ request: vi.fn() }))
 vi.mock('../lib/api', () => ({ request }))
 
 describe('orderApi', () => {
