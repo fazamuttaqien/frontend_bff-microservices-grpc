@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Menu } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { UserMenu } from '@/components/app/UserMenu'
 import { AppSidebar } from '@/components/app/AppSidebar'
