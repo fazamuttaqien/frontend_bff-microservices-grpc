@@ -40,12 +40,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     const token = authStorage.getToken()
     if (!token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus('unauthenticated')
       return
     }
 
     let active = true
-    void authApi.me(token)
+    void authApi
+      .me(token)
       .then((currentUser) => {
         if (!active) return
         setUser(currentUser)
@@ -106,6 +108,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext)
   if (!context) throw new Error('useAuth must be used inside AuthProvider')
