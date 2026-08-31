@@ -1,4 +1,5 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { withFaroRouterInstrumentation } from '@grafana/faro-react'
 import { PlaceholderPage } from '../components/PlaceholderPage'
 import { LoginPage } from '../features/auth/LoginPage'
 import { PublicOnlyRoute } from '../features/auth/PublicOnlyRoute'
@@ -17,7 +18,7 @@ import {
 import { AppLayout } from './layouts/AppLayout'
 import { PublicLayout } from './layouts/PublicLayout'
 
-export const router = createBrowserRouter([
+const reactBrowserRouter = createBrowserRouter([
   {
     element: <PublicOnlyRoute />,
     children: [
@@ -99,3 +100,5 @@ export const router = createBrowserRouter([
   },
   { path: '*', element: <Navigate to="/" replace /> },
 ])
+
+export const router = withFaroRouterInstrumentation(reactBrowserRouter)
