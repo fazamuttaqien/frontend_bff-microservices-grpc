@@ -27,7 +27,9 @@ export const faro =
         instrumentations: [
           ...getWebInstrumentations(),
           new TracingInstrumentation({
-            propagateTraceHeaderCorsUrls: bffBaseUrl ? [bffBaseUrl] : [],
+            instrumentationOptions: {
+              propagateTraceHeaderCorsUrls: bffBaseUrl ? [bffBaseUrl] : [],
+            },
           }),
           new ReactIntegration({
             router: createReactRouterV7DataOptions({
