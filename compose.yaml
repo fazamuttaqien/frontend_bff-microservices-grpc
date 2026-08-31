@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_APP_NAME: ${VITE_APP_NAME:-frontend-bff-microservices-grpc}
+        VITE_APP_ENV: ${VITE_APP_ENVIRONMENT:-production}
+        VITE_APP_VERSION: ${VITE_APP_VERSION:-0.1.0}
+        VITE_BFF_BASE_URL: ${VITE_BFF_BASE_URL:-http://localhost:8080}
+        VITE_FARO_URL: ${VITE_FARO_URL:-}
+        VITE_FARO_APP_NAME: ${VITE_FARO_APP_NAME:-frontend-bff-microservices-grpc}
+        VITE_FARO_APP_NAMESPACE: ${VITE_FARO_APP_NAMESPACE:-bff-microservices-grpc}
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    restart: unless-stopped
