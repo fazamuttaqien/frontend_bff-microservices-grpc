@@ -9,6 +9,8 @@ import { matchRoutes } from 'react-router-dom'
 
 const url = import.meta.env.VITE_FARO_URL
 const appName = import.meta.env.VITE_FARO_APP_NAME
+const appNamespace = import.meta.env.VITE_FARO_APP_NAMESPACE
+const appVersion = import.meta.env.VITE_APP_VERSION
 const environment = import.meta.env.VITE_APP_ENV
 const bffBaseUrl = import.meta.env.VITE_BFF_BASE_URL
 
@@ -18,6 +20,8 @@ export const faro =
         url,
         app: {
           name: appName,
+          namespace: appNamespace,
+          version: appVersion,
           environment,
         },
         instrumentations: [
