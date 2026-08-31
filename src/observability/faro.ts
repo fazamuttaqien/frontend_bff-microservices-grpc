@@ -1,4 +1,10 @@
-import { getWebInstrumentations, initializeFaro } from '@grafana/faro-react'
+import {
+  createReactRouterV7DataOptions,
+  getWebInstrumentations,
+  initializeFaro,
+  ReactIntegration,
+} from '@grafana/faro-react'
+import { matchRoutes } from 'react-router-dom'
 
 const url = import.meta.env.VITE_FARO_URL
 const appName = import.meta.env.VITE_FARO_APP_NAME
@@ -12,6 +18,13 @@ export const faro =
           name: appName,
           environment,
         },
-        instrumentations: [...getWebInstrumentations()],
+        instrumentations: [
+          ...getWebInstrumentations(),
+          new ReactIntegration({
+            router: createReactRouterV7DataOptions({
+              matchRoutes,
+            }),
+          }),
+        ],
       })
     : undefined
