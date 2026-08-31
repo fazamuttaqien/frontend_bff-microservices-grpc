@@ -11,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 ARG VITE_APP_NAME
-ARG VITE_APP_ENV
+ARG VITE_APP_ENVIRONMENT
 ARG VITE_APP_VERSION
 ARG VITE_BFF_BASE_URL
 ARG VITE_FARO_URL
@@ -19,7 +19,7 @@ ARG VITE_FARO_APP_NAME
 ARG VITE_FARO_APP_NAMESPACE
 
 ENV VITE_APP_NAME=$VITE_APP_NAME \
-    VITE_APP_ENV=$VITE_APP_ENV \
+    VITE_APP_ENV=$VITE_APP_ENVIRONMENT \
     VITE_APP_VERSION=$VITE_APP_VERSION \
     VITE_BFF_BASE_URL=$VITE_BFF_BASE_URL \
     VITE_FARO_URL=$VITE_FARO_URL \
@@ -28,11 +28,11 @@ ENV VITE_APP_NAME=$VITE_APP_NAME \
 
 RUN pnpm build
 
-FROM nginx:1.29-alpine AS runtime
+FROM nginxinc/nginx-unprivileged:alpine AS runtime
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
