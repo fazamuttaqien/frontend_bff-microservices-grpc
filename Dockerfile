@@ -3,8 +3,12 @@ FROM node:24-alpine AS build
 WORKDIR /app
 RUN corepack enable
 
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+# Copy pnpm configuration first
+COPY .pnpmrc package.json pnpm-lock.yaml ./
+
+# Install dependencies with script approval disabled in CI environment
+ENV CI=true
+RUN pnpm install --frozen-lockfile --ignore-scripts || pnpm install --frozen-lockfile
 
 COPY . .
 

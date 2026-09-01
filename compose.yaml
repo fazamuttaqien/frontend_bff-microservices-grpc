@@ -13,5 +13,5 @@ services:
         VITE_FARO_APP_NAME: ${VITE_FARO_APP_NAME:-}
         VITE_FARO_APP_NAMESPACE: ${VITE_FARO_APP_NAMESPACE:-}
     ports:
-      - '${FRONTEND_PORT:-3000}:8080'
+      - "${FRONTEND_PORT:-3000}:8080"
     restart: unless-stopped
