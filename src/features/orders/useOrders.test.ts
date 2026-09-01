@@ -6,7 +6,7 @@ const { list } = vi.hoisted(() => ({ list: vi.fn() }))
 vi.mock('@/services/order.api', () => ({
   orderApi: { list, get: vi.fn() },
 }))
-vi.mock('../auth/auth.storage', () => ({
+vi.mock('@/auth/auth.storage', () => ({
   authStorage: { getToken: () => 'token' },
 }))
 

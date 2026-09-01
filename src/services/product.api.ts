@@ -1,5 +1,5 @@
-import { apiRequest } from '../lib/api-client'
-import type { Product, ProductList } from '../types/api'
+import { apiRequest } from '@/lib/api-client'
+import type { Product, ProductList } from '@/types/api'
 
 export const productApi = {
   list: (page = 1, pageSize = 20) =>

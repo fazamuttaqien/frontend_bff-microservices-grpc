@@ -1,10 +1,10 @@
-import { apiRequest } from '../lib/api-client'
+import { apiRequest } from '@/lib/api-client'
 import type {
   CreateOrderInput,
   Order,
   OrderDetail,
   OrderList,
-} from '../types/api'
+} from '@/types/api'
 
 export const orderApi = {
   create(input: CreateOrderInput) {

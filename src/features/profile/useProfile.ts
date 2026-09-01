@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { ApiError } from '@/lib/api-client'
 import { userApi } from '@/services/user.api'
-import { setAuthenticated, setUnauthenticated } from '../auth/authSlice'
+import { setAuthenticated, setUnauthenticated } from '@/features/auth/authSlice'
 
 function errorMessage(error: unknown) {
   if (error instanceof ApiError) return error.message

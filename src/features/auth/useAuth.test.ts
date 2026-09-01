@@ -12,6 +12,8 @@ const user: User = {
   id: 'user-1',
   name: 'Test User',
   email: 'test@example.com',
+  created_at: '2026-08-30T10:00:00Z',
+  updated_at: '2026-08-30T10:00:00Z',
 }
 
 describe('bootstrapAuthentication', () => {

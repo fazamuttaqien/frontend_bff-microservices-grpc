@@ -1,11 +1,11 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { withFaroRouterInstrumentation } from '@grafana/faro-react'
-import '../observability/faro'
-import { PlaceholderPage } from '../components/PlaceholderPage'
-import { LoginPage } from '../features/auth/LoginPage'
-import { PublicOnlyRoute } from '../features/auth/PublicOnlyRoute'
-import { ProtectedRoute } from '../features/auth/ProtectedRoute'
-import { RegisterPage } from '../features/auth/RegisterPage'
+import '@/observability/faro'
+import { PlaceholderPage } from '@/components/PlaceholderPage'
+import { LoginPage } from '@/features/auth/LoginPage'
+import { PublicOnlyRoute } from '@/features/auth/PublicOnlyRoute'
+import { ProtectedRoute } from '@/features/auth/ProtectedRoute'
+import { RegisterPage } from '@/features/auth/RegisterPage'
 import {
   CreateOrderPage,
   DashboardPage,

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 const { apiRequest } = vi.hoisted(() => ({ apiRequest: vi.fn() }))
-vi.mock('../lib/api-client', () => ({ apiRequest }))
+vi.mock('@/lib/api-client', () => ({ apiRequest }))
 
 import { orderApi } from './order.api'
 

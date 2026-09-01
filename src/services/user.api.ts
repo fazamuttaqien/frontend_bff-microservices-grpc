@@ -1,5 +1,5 @@
-import { apiRequest } from '../lib/api-client'
-import type { User } from '../types/api'
+import { apiRequest } from '@/lib/api-client'
+import type { User } from '@/types/api'
 
 export const userApi = {
   me: () =>

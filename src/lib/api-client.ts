@@ -21,13 +21,20 @@ export type ApiErrorCode =
   | 'unknown_error'
 
 export class ApiError extends Error {
+  readonly status: number
+  readonly code: ApiErrorCode
+  readonly details?: unknown
+
   constructor(
-    public readonly status: number,
-    public readonly code: ApiErrorCode,
+    status: number,
+    code: ApiErrorCode,
     message: string,
-    public readonly details?: unknown,
+    details?: unknown,
   ) {
     super(message)
+    this.status = status
+    this.code = code
+    this.details = details
     this.name = 'ApiError'
   }
 }

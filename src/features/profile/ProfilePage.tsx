@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAuth } from '../auth/useAuth'
+import { useAuth } from '@/features/auth/useAuth'
 import { UserInformation } from './UserInformation'
 import { useProfile } from './useProfile'
 

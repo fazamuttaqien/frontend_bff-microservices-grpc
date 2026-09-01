@@ -1,5 +1,5 @@
-import { apiRequest } from '../lib/api-client'
-import type { LoginInput, RegisterInput, User } from '../types/api'
+import { apiRequest } from '@/lib/api-client'
+import type { LoginInput, RegisterInput, User } from '@/types/api'
 
 export interface LoginResponse {
   expires_at: number

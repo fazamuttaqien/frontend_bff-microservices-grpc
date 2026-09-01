@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAuth } from '../auth/AuthProvider'
-import { useOrder, useOrders } from '../orders/useOrders'
+import { useAuth } from '@/features/auth/AuthProvider'
+import { useOrder, useOrders } from '@/features/orders/useOrders'
 
 const PAGE_SIZE = 5
 
