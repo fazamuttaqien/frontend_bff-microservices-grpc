@@ -1,5 +1,3 @@
-# Vite VITE_* values are public build-time configuration.
-# Never pass credentials or secrets as VITE_* build arguments.
 FROM node:24-alpine AS build
 
 WORKDIR /app
